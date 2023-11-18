@@ -1,12 +1,7 @@
 <?php
 
-$db_host = 'localhost';
-$db_name = 'test';
-$db_user = 'root';
-$db_pass = '';
-
-$conn = mysqli_connect($db_host,$db_user,$db_pass,$db_name);
-
+require("includes/database.php");
+$conn = getDb();
 $sql = "SELECT * 
         FROM articole
         ORDER BY published_at";
@@ -22,17 +17,10 @@ if ($results === false) {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>My blog</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <header>
-            <h1>My blog</h1>
-        </header>
-    <main>
+<?php require_once('includes/header.php'); ?>
+
+        <a href="new-article.php">New article</a>
+
         <?php if (empty($articles)): ?>
         <p>No articles found!</p>
         <?php else: ?>
@@ -40,13 +28,11 @@ if ($results === false) {
             <?php foreach ($articles as $article): ?>
             <li>
                 <article>
-                    <h2><?= $article['title'] ?></h2>
-                    <p><?= $article['content'] ?></p>
+                    <h2><a href="article.php?id=<?= $article['id']?>" ><?= htmlspecialchars($article['title']) ?></a></h2>
+                    <p><?= htmlspecialchars($article['content']) ?></p>
                 </article>
             </li>
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>
-    </main>
-    </body>
-</html>
+ <?php include_once('includes/footer.php');?>

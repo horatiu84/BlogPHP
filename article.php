@@ -1,47 +1,36 @@
 <?php
+require "includes/database.php";
 
-$db_host = 'localhost';
-$db_name = 'test';
-$db_user = 'root';
-$db_pass = '';
-
-$conn = mysqli_connect($db_host,$db_user,$db_pass,$db_name);
-
-$sql = "SELECT * 
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $conn = getDb();
+    $sql = "SELECT * 
         FROM articole
-        WHERE id=0";
+        WHERE id=" .$_GET['id'];
 
 
-$results = mysqli_query($conn,$sql);
+    $results = mysqli_query($conn,$sql);
 
-if ($results === false) {
-    echo  mysqli_error($conn);
+    if ($results === false) {
+        echo  mysqli_error($conn);
+    } else {
+        $article = mysqli_fetch_assoc($results);
+    }
 } else {
-    $article = mysqli_fetch_assoc($results);
+    $article = null;
 }
 
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>My blog</title>
-    <meta charset="utf-8">
-</head>
-<body>
-<header>
-    <h1>My blog</h1>
-</header>
+?>
+<?php require_once('includes/header.php'); ?>
 <main>
     <?php if ($article === null): ?>
         <p>Article not found!</p>
     <?php else: ?>
 
                     <article>
-                        <h2><?= $article['title'] ?></h2>
-                        <p><?= $article['content'] ?></p>
+                        <h2><?= htmlspecialchars($article['title']) ?></h2>
+                        <p><?= htmlspecialchars($article['content']) ?></p>
                     </article>
     <?php endif; ?>
-</main>
-</body>
-</html>
+
+<?php include_once('includes/footer.php');?>
