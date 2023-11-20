@@ -1,8 +1,14 @@
 <?php
 include_once 'includes/database.php';
 require  'includes/article.php';
+require 'includes/auth.php';
 
-$errors = [];
+session_start();
+
+if(! isLoggedIn()) {
+    die("Unautorised");
+}
+
 //we initiate the values for the form fields with empty strings,
 // so we can use it in the form, for values
 $title = '' ;
