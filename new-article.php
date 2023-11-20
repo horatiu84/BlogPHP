@@ -1,5 +1,6 @@
 <?php
 include_once 'includes/database.php';
+require  'includes/article.php';
 
 $errors = [];
 //we initiate the values for the form fields with empty strings,
@@ -16,13 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
     $content = $_POST['content'] ;
     $published_at = $_POST['published_at'];
 
-    // we validate the form
-    if ($title == '') {
-        $errors[]="The title is required";
-    }
-    if ($content == '') {
-        $errors[]="The content is required";
-    }
+    $errors = validateArticle($title,$content);
 
     if(empty($errors)) {
 
@@ -74,31 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 
 <h2>New article</h2>
 
-<?php if(!empty($errors)): ?>
-    <div>
-        <ul>
-            <?php foreach ($errors as $error): ?>
-            <li><?= $error ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-<?php endif; ?>
-<form method="post">
-    <div>
-        <label for="title">Title:</label>
-        <input type="text" name="title" id="title" value="<?= htmlspecialchars($title) ?>">
-    </div>
-    <div>
-        <label for="content">Content</label>
-        <textarea name="content" placeholder="Article content" id="content"><?= htmlspecialchars($content) ?></textarea>
-    </div>
-    <div>
-        <label for="published_at">Publication date and time</label>
-        <input type="datetime-local" name="published_at" id="published_at" value="<?= htmlspecialchars($published_at) ?>">
-    </div>
-
-    <button>Add</button>
-
-</form>
+<?php require "includes/article-form.php" ?>
 
 <?php require 'includes/footer.php';
