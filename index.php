@@ -1,11 +1,8 @@
 <?php
 
-require 'classes/Database.php';
-require 'classes/Article.php';
-require ('includes/auth.php');
-session_start();
-$db=new Database();
-$conn=$db->getConn();
+require 'includes/init.php';
+
+$conn = require 'includes/db.php';
 
 //$sql = "SELECT *
 //        FROM articole
@@ -20,12 +17,6 @@ $articles = Article::getAll($conn);
 
 <?php require_once('includes/header.php'); ?>
        
-        <?php if (isLoggedIn()): ?>
-        <p>You are logged in! <a href="logout.php">Log out!</a></p>
-           <p>  <a href="new-article.php">New article</a> </p>
-        <?php else: ?>
-            <p>You are not logged in! <a href="login.php">Log in!</a></p>
-        <?php endif; ?>
 
 
         <?php if (empty($articles)): ?>

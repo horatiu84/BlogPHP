@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+require 'includes/init.php';
 
-session_destroy();
+Auth::logout();
 header('Location: index.php');

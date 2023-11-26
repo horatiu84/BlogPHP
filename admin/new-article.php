@@ -1,14 +1,8 @@
 <?php
-include_once 'classes/Database.php';
-require  'classes/Article.php';
-require 'includes/auth.php';
-
-session_start();
+require '../includes/init.php';
 
 
-if(! isLoggedIn()) {
-    die("Unautorised");
-}
+Auth::requireLogin();
 
 //we initiate the values for the form fields with empty strings,
 // so we can use it in the form, for values
@@ -16,8 +10,7 @@ if(! isLoggedIn()) {
 $article = new Article();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
-    $db = new Database();
-    $conn = $db->getConn();
+    $conn = require '../includes/db.php';
 
     $article->title = $_POST['title'];
     $article->content=$_POST['content'];
@@ -32,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 ?>
 
 <?php
- require 'includes/header.php';
+ require '../includes/header.php';
 
  ?>
 
@@ -40,4 +33,4 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 
 <?php require "includes/article-form.php" ?>
 
-<?php require 'includes/footer.php';
+<?php require '../includes/footer.php';

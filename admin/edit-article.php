@@ -1,10 +1,7 @@
 <?php
-require 'classes/Database.php';
-require 'classes/Article.php';
-
-
-$db = new Database();
-$conn = $db->getConn();
+require '../includes/init.php';
+Auth::requireLogin();
+$conn = require '../includes/db.php';
 
 if (isset($_GET['id'])) {
 
@@ -26,11 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         }
 }
 
-
 ?>
 
 <?php
-require 'includes/header.php';
+require '../includes/header.php';
 
 ?>
 
@@ -38,4 +34,4 @@ require 'includes/header.php';
 
 <?php require "includes/article-form.php" ?>
 
-<?php require 'includes/footer.php';
+<?php require "../includes/footer.php";

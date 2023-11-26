@@ -1,13 +1,13 @@
 <?php
 
-session_start();
+require 'includes/init.php';
+
 require 'includes/header.php';
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-    if($_POST['username'] === 'hora' && $_POST['password'] === 'secret'){
+    $conn = require 'includes/db.php';
+    if(User::authenticate($conn,$_POST['username'],$_POST['password'])){
         //prevent session fixation attacks
-        session_regenerate_id(true);
-
-        $_SESSION['is_logged_in'] = true;
+        Auth::login();
         header('Location: index.php');
     } else {
         $error = "Incorrect credentials";
@@ -25,8 +25,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 <form method="post">
     <label for="username">Username</label>
     <input name="username" id="username">
+    <br>
     <label for="password">Password</label>
     <input type="password" name="password" id="password">
+    <br>
     <button>Log in</button>
 </form>
 
