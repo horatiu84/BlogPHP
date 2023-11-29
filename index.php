@@ -4,14 +4,15 @@ require 'includes/init.php';
 
 $conn = require 'includes/db.php';
 
-//$sql = "SELECT *
-//        FROM articole
-//        ORDER BY published_at";
-//$results = $conn->query($sql);
-//
-//$articles = $results->fetchAll(PDO::FETCH_ASSOC);
 
-$articles = Article::getAll($conn);
+//if (isset($_GET['page'])) {
+//    $paginator = new Paginator($_GET['page'],4);
+//} else {
+//    $paginator = new Paginator(1,4);
+//}
+$paginator = new Paginator($_GET['page'] ?? 1,4,Article::getTotal($conn));
+
+$articles = Article::getPage($conn,$paginator->limit,$paginator->offset);
 
 ?>
 
@@ -32,5 +33,6 @@ $articles = Article::getAll($conn);
             </li>
             <?php endforeach; ?>
         </ul>
+        <?php require 'includes/pagination.php' ;?>
         <?php endif; ?>
  <?php include_once('includes/footer.php');?>
