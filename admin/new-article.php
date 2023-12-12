@@ -9,14 +9,22 @@ Auth::requireLogin();
 
 $article = new Article();
 
+$conn = require '../includes/db.php';
+
+$categories_id = [];
+$categories = Category::getAll($conn);
+
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
-    $conn = require '../includes/db.php';
+
 
     $article->title = $_POST['title'];
     $article->content=$_POST['content'];
     $article->published_at = $_POST['published_at'];
 
+    $categories_id = $_POST['category'] ?? [];
+
     if($article->create($conn)) {
+        $article->setCategories($conn,$categories_id);
         header("Location: article.php?id={$article->id}");
     }
 

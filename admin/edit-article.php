@@ -13,12 +13,19 @@ if (isset($_GET['id'])) {
 } else {
     die("id not supplied, article not found");
 }
+$categories_id = array_column($article->getCategories($conn), 'id');
+$categories = Category::getAll($conn);
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $article->title = $_POST['title'] ;
     $article->content = $_POST['content'] ;
     $article->published_at = $_POST['published_at'];
 
+    $categories_id = $_POST['category'] ?? [];
+
+
     if($article->update($conn)){
+            $article->setCategories($conn,$categories_id);
             header("Location: article.php?id={$article->id}");
         }
 }

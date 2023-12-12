@@ -40,8 +40,6 @@ class Paginator {
             $this->next=$page+1;
         }
 
-
-
         if ($page>1) {
             $this->previous=$page-1;
         }
